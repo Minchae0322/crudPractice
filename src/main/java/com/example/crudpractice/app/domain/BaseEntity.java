@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Comment;
 import org.hibernate.envers.Audited;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.ObjectUtils;
@@ -45,7 +43,6 @@ public class BaseEntity {
 
     @PrePersist
     public void onPrePersist() {
-        this.createdAt = Utils.now();
         this.updatedAt = this.createdAt;
         this.isEnabled = ObjectUtils.isEmpty(isEnabled) || isEnabled;
         this.isDeleted = false;

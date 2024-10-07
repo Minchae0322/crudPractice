@@ -1,24 +1,27 @@
 package com.example.crudpractice.app.domain;
 
+import com.example.crudpractice.app.core.util.Utils;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
+import org.hibernate.envers.Audited;
+import org.springframework.util.ObjectUtils;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
 @Getter
-public class Notice extends BaseEntity {
+@Audited // 데이터 변경이력 테이블 생성을 위해 사용하는 것으로 판단하였습니다.
+public class Notice {
 
     @Comment("공지사항 아이디")
     @Column(name = "notice_id",nullable = false)
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long noticeId;
 
     @Comment("공지사항 제목")
     @Column(name = "title",nullable = false, length = 120)
@@ -47,5 +50,14 @@ public class Notice extends BaseEntity {
 
     @Comment("등록일시")
     @Column(name = "created_at", nullable = false)
-    private LocalDate created_at;
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.createdAt = Utils.now();
+        this.isEnabled = ObjectUtils.isEmpty(isEnabled) || isEnabled;
+        this.isDeleted = false;
+    }
+
+
 }
