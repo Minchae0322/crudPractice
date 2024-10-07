@@ -23,6 +23,24 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+    //swagger 3.0
+    /*swagger3.0*/
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+   // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //test
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+
+    //envers
+    implementation 'org.hibernate:hibernate-envers' //수정 내역 의존성
+    implementation 'org.springframework.data:spring-data-envers' //수정 내역 의존성
+
+    //lombok
+    implementation 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
