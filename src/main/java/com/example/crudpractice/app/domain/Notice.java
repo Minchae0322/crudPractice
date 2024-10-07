@@ -1,6 +1,7 @@
 package com.example.crudpractice.app.domain;
 
 import com.example.crudpractice.app.core.util.Utils;
+import com.example.crudpractice.app.domain.dto.NoticeUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -57,6 +58,18 @@ public class Notice {
         this.createdAt = Utils.now();
         this.isEnabled = ObjectUtils.isEmpty(isEnabled) || isEnabled;
         this.isDeleted = false;
+    }
+
+    public void update(NoticeUpdateDto noticeUpdateDto) {
+        this.content = ObjectUtils.isEmpty(noticeUpdateDto.getNoticeContent())
+                ? this.content
+                : noticeUpdateDto.getNoticeContent();
+        this.title = ObjectUtils.isEmpty(noticeUpdateDto.getNoticeTitle())
+                ? this.title
+                : noticeUpdateDto.getNoticeTitle();
+        this.isTop = ObjectUtils.isEmpty(noticeUpdateDto.isTop())
+                ? this.isTop
+                : noticeUpdateDto.isTop();
     }
 
 

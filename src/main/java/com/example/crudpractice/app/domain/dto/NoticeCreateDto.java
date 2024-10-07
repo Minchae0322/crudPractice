@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class NoticeCreateDto {
 
+    //todo notice
     @NotBlank
     @Schema(description = "공지사항 제목")
     private String noticeTitle;

@@ -6,6 +6,7 @@ import com.example.crudpractice.app.core.util.Utils;
 import com.example.crudpractice.app.domain.Notice;
 import com.example.crudpractice.app.domain.dto.NoticeCreateDto;
 import com.example.crudpractice.app.domain.dto.NoticeDto;
+import com.example.crudpractice.app.domain.dto.NoticeUpdateDto;
 import com.example.crudpractice.app.repository.NoticeRepository;
 import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,6 @@ public class NoticeService {
     public Long create(
             NoticeCreateDto createDto
     ) {
-        //auditing 을 사용했을 때, baseEntity 에 createBy 를 데이터 삽입하기 전에 가져오는 법.
 
         //notice 생성을 할 때 한번 더 값의 유효성을 판단하는지
         Notice notice = Notice.builder()
@@ -46,9 +46,17 @@ public class NoticeService {
         return NoticeDto.of(getNotice(noticeId));
     }
 
-    public Notice getNotice(Long noticeId) {
-        return noticeRepository.findByNoticeIdAndIsDeleted(noticeId, false)
+    private Notice getNotice(Long noticeId) {
+        return noticeRepository.findByNoticeIdAndDeleted(noticeId, false)
                 .orElseThrow(() -> new ResponseException("NOTICE NOT FOUND", HttpStatus.NOT_FOUND));
+    }
+
+    @Transactional
+    public NoticeDto updateNotice(Long noticeId, NoticeUpdateDto noticeUpdateDto) {
+        Notice notice = getNotice(noticeId);
+        notice.update(noticeUpdateDto);
+
+        return NoticeDto.of(notice);
     }
 
 
