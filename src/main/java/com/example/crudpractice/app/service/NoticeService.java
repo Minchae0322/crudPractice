@@ -2,17 +2,22 @@ package com.example.crudpractice.app.service;
 
 
 import com.example.crudpractice.app.core.exception.ResponseException;
-import com.example.crudpractice.app.core.util.Utils;
+
 import com.example.crudpractice.app.domain.Notice;
 import com.example.crudpractice.app.domain.dto.NoticeCreateDto;
 import com.example.crudpractice.app.domain.dto.NoticeDto;
 import com.example.crudpractice.app.domain.dto.NoticeUpdateDto;
 import com.example.crudpractice.app.repository.NoticeRepository;
-import io.swagger.models.Response;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
+
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -22,28 +27,16 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
 
     /**
-     * 기본 편성표 등록
+     * 공지사항 등록
      * @param createDto - 등록 dto
-     *
      * @return 생성된 공지사항 아이디
      */
-
     @Transactional
-    public Long create(
-            NoticeCreateDto createDto
-    ) {
-
+    public Long create(NoticeCreateDto createDto) {
         //notice 생성을 할 때 한번 더 값의 유효성을 판단하는지
-        Notice notice = Notice.builder()
-                .title(createDto.getNoticeTitle())
-                .content(createDto.getNoticeContent())
-                .build();
+        Notice notice = createDto.toEntity();
 
         return noticeRepository.save(notice).getNoticeId();
-    }
-
-    public NoticeDto getBasicNotice(Long noticeId) {
-        return NoticeDto.of(getNotice(noticeId));
     }
 
     private Notice getNotice(Long noticeId) {
@@ -51,6 +44,32 @@ public class NoticeService {
                 .orElseThrow(() -> new ResponseException("NOTICE NOT FOUND", HttpStatus.NOT_FOUND));
     }
 
+    /**
+     * 공지사항 상세 정보 조회
+     * @param noticeId - 등록 id
+     * @return 공지사항 dto
+     */
+    public NoticeDto findNotice(Long noticeId) {
+        Notice notice = getNotice(noticeId);
+        return NoticeDto.of(notice);
+    }
+
+    /**
+     * 공지사항 상단 고정부터 페이지 조회
+     * @param pageable - 해당 페이지 offset 및 size
+     * @return 공지사항 페이지
+     */
+    public Page<NoticeDto> getNoticePagePriorityTopNotice(Pageable pageable) {
+        return noticeRepository.findAllNoticePagePriorityTopNotice(pageable, true)
+                .map(NoticeDto::of);
+    }
+
+    /**
+     * 공지사항 변경
+     * @param noticeId - 공지 사항 id
+     * @param noticeUpdateDto 공지 사항 변경 dto
+     * @return 변경된 공지사항 dto
+     */
     @Transactional
     public NoticeDto updateNotice(Long noticeId, NoticeUpdateDto noticeUpdateDto) {
         Notice notice = getNotice(noticeId);
@@ -59,6 +78,15 @@ public class NoticeService {
         return NoticeDto.of(notice);
     }
 
+    /**
+     * 공지사항 삭제
+     * @param noticeId - 공지 사항 id
+     */
+    @Transactional
+    public void delete(Long noticeId) {
+        Notice notice = getNotice(noticeId);
+        notice.delete();
+    }
 
 
 }

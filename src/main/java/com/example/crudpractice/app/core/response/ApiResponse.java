@@ -9,11 +9,6 @@ import lombok.Data;
  * {
  *   "status": 200,
  *   "success": true,
- *   "data": {
- *     "id": 1,
- *     "user_id": "admin",
- *     "name": "관리자"
- *   }
  * }
  */
 @Data
