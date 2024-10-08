@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -18,8 +20,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class NoticeCreateDto {
 
-    //todo
     @NotBlank
+    @Max(120)
     @Schema(description = "공지사항 제목")
     private String noticeTitle;
 
@@ -27,5 +29,11 @@ public class NoticeCreateDto {
     @Schema(description = "공지사항 컨텐트")
     private String noticeContent;
 
+    public Notice toEntity() {
+        return Notice.builder()
+                .title(this.noticeTitle)
+                .content(this.noticeContent)
+                .build();
+    }
 
 }
