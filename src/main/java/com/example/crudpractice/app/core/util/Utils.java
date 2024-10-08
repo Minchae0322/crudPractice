@@ -27,6 +27,8 @@ public class Utils {
 
     private static final String ENTITY_BASE_PACKAGE = "com.example.crudpractice";
 
+    public static final Long MAX_HIT_COUNT = 100000000L;
+
     public static LocalDateTime now() {
 
         return LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));

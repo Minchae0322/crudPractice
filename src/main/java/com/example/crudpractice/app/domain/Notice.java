@@ -14,6 +14,8 @@ import org.springframework.util.ObjectUtils;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static com.example.crudpractice.app.core.util.Utils.MAX_HIT_COUNT;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -78,6 +80,15 @@ public class Notice {
         this.isTop = ObjectUtils.isEmpty(noticeUpdateDto.isTop())
                 ? this.isTop
                 : noticeUpdateDto.isTop();
+    }
+
+    public void hitCountUp() {
+        if(hit > MAX_HIT_COUNT) {
+            this.hit = MAX_HIT_COUNT;
+            return;
+        }
+        this.hit++;
+
     }
 
 

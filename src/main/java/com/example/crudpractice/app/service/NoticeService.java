@@ -51,7 +51,16 @@ public class NoticeService {
      */
     public NoticeDto findNotice(Long noticeId) {
         Notice notice = getNotice(noticeId);
+        upHitCount(notice);
         return NoticeDto.of(notice);
+    }
+
+    /**
+     * 공지사항 상세 정보 조회
+     * @param notice - 공지사항 상세 정보
+     */
+    private void upHitCount(Notice notice) {
+        notice.hitCountUp();
     }
 
     /**

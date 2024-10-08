@@ -29,6 +29,7 @@ public class NoticeDto {
 
     private LocalDateTime created_at;
 
+
     public static NoticeDto of(Notice notice){
         return NoticeDto.builder()
                 .noticeId(ObjectUtils.isEmpty(notice.getNoticeId())
