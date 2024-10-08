@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -23,10 +24,6 @@ public class NoticeFacadeService {
         return noticeService.create(createDto);
     }
 
-    public NoticeDto getBasicNotice(Long noticeId) {
-        return noticeService.getBasicNotice(noticeId);
-    }
-
     public NoticeDto update(Long noticeId, NoticeUpdateDto noticeUpdateDto) {
         return noticeService.updateNotice(noticeId, noticeUpdateDto);
     }
@@ -38,5 +35,9 @@ public class NoticeFacadeService {
 
     public void deleteNotice(Long noticeId) {
         noticeService.delete(noticeId);
+    }
+
+    public NoticeDto findNotice(Long noticeId) {
+        return noticeService.findNotice(noticeId);
     }
 }

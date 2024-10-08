@@ -46,11 +46,11 @@ public class Notice {
 
     @Comment("사용 여부")
     @Column(name = "is_enabled", nullable = false)
-    private Boolean isEnabled;
+    private boolean isEnabled;
 
     @Comment("삭제 여부")
     @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted;
+    private boolean deleted;
 
 
     @Comment("등록일시")
@@ -61,11 +61,11 @@ public class Notice {
     public void onPrePersist() {
         this.createdAt = Utils.now();
         this.isEnabled = ObjectUtils.isEmpty(isEnabled) || isEnabled;
-        this.isDeleted = false;
+        this.deleted = false;
     }
 
     public void delete() {
-        this.isDeleted = true;
+        this.deleted = true;
     }
 
     public void update(NoticeUpdateDto noticeUpdateDto) {

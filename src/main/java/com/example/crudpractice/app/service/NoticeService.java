@@ -53,17 +53,14 @@ public class NoticeService {
     }
 
     private Notice getNotice(Long noticeId) {
-        /*return noticeRepository.findByNoticeIdAndDeleted(noticeId, false)
-                .orElseThrow(() -> new ResponseException("NOTICE NOT FOUND", HttpStatus.NOT_FOUND));*/
-        return null;
+        return noticeRepository.findByNoticeIdAndDeleted(noticeId, false)
+                .orElseThrow(() -> new ResponseException("NOTICE NOT FOUND", HttpStatus.NOT_FOUND));
     }
 
 
     public Page<NoticeDto> getNoticePagePriorityTopNotice(Pageable pageable) {
-        return noticeRepository.getTopNoticeFirstAndOtherNotice(pageable)
-                .stream()
-                .map(NoticeDto::of)
-                .collect(Collectors.toList());
+        return noticeRepository.findAllNoticePagePriorityTopNotice(pageable, true)
+                .map(NoticeDto::of);
     }
 
     @Transactional
@@ -79,5 +76,10 @@ public class NoticeService {
     public void delete(Long noticeId) {
         Notice notice = getNotice(noticeId);
         notice.delete();
+    }
+
+    public NoticeDto findNotice(Long noticeId) {
+        Notice notice = getNotice(noticeId);
+        return NoticeDto.of(notice);
     }
 }
