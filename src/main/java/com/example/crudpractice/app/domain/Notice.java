@@ -31,15 +31,15 @@ public class Notice {
     private Long noticeId;
 
 
-    @Column(name = "title",nullable = false, length = 120)
+    @Column(name = "title", nullable = false, length = 120)
     private String title;
 
     @Comment("공지사항 내용")
-    @Column(name = "content", nullable = false, columnDefinition = "text")
+    @Column(name = "content", columnDefinition = "text")
     private String content;
 
     @Comment("조회수")
-    @Column(name = "hit", nullable = false, columnDefinition = "BIGINT default 0")
+    @Column(name = "hit", columnDefinition = "bigint default 0")
     private Long hit;
 
     @Comment("상단 고정 여부")
