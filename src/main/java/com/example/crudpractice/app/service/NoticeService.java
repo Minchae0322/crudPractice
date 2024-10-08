@@ -47,8 +47,9 @@ public class NoticeService {
     }
 
     private Notice getNotice(Long noticeId) {
-        return noticeRepository.findByNoticeIdAndDeleted(noticeId, false)
-                .orElseThrow(() -> new ResponseException("NOTICE NOT FOUND", HttpStatus.NOT_FOUND));
+        /*return noticeRepository.findByNoticeIdAndDeleted(noticeId, false)
+                .orElseThrow(() -> new ResponseException("NOTICE NOT FOUND", HttpStatus.NOT_FOUND));*/
+        return null;
     }
 
     @Transactional

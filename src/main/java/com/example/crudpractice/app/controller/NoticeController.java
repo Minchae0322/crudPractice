@@ -43,4 +43,9 @@ public class NoticeController {
     }
 
 
+  /*  @Operation(summary = "공지사항 상태만 삭제", tags = "Notice")
+    @PutMapping(path = "/notice/update/{noticeId}")
+    public ResponseEntity<?> delete(@PathVariable Long noticeId){
+        return new ResponseEntity<>(new ApiResponse<>(noticeFacadeService.update(noticeId, updateDto)), HttpStatus.OK);
+    }*/
 }

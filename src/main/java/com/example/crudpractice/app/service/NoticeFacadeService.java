@@ -14,8 +14,6 @@ public class NoticeFacadeService {
 
     private final NoticeService noticeService;
 
-
-
     public Long create(NoticeCreateDto createDto) {
         return noticeService.create(createDto);
     }

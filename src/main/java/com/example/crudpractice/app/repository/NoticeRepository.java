@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
-    Optional<Notice> findByNoticeIdAndDeleted(Long id, boolean isDeleted);
+    //Optional<Notice> findByNoticeIdAndDeleted(Long id, boolean deleted);
 }
