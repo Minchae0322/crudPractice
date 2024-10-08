@@ -10,9 +10,15 @@ import com.example.crudpractice.app.domain.dto.NoticeUpdateDto;
 import com.example.crudpractice.app.repository.NoticeRepository;
 import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -52,6 +58,14 @@ public class NoticeService {
         return null;
     }
 
+
+    public Page<NoticeDto> getNoticePagePriorityTopNotice(Pageable pageable) {
+        return noticeRepository.getTopNoticeFirstAndOtherNotice(pageable)
+                .stream()
+                .map(NoticeDto::of)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public NoticeDto updateNotice(Long noticeId, NoticeUpdateDto noticeUpdateDto) {
         Notice notice = getNotice(noticeId);
@@ -61,5 +75,9 @@ public class NoticeService {
     }
 
 
-
+    @Transactional
+    public void delete(Long noticeId) {
+        Notice notice = getNotice(noticeId);
+        notice.delete();
+    }
 }
