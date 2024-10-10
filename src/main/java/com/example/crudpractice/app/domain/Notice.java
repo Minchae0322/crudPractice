@@ -14,6 +14,8 @@ import org.springframework.util.ObjectUtils;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static com.example.crudpractice.app.core.util.Utils.MAX_HIT_COUNT;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,16 +31,16 @@ public class Notice {
     private Long noticeId;
 
 
-    @Column(name = "title",nullable = false, length = 120)
+    @Column(name = "title", nullable = false, length = 120)
     private String title;
 
     @Comment("공지사항 내용")
-    @Column(name = "content", nullable = false, columnDefinition = "text")
+    @Column(name = "content", columnDefinition = "text")
     private String content;
 
     @Comment("조회수")
-    @Column(name = "hit", nullable = false, columnDefinition = "BIGINT default 0")
-    private Long hit;
+    @Column(name = "hit", columnDefinition = "bigint default 0")
+    private long hit;
 
     @Comment("상단 고정 여부")
     @Column(name = "is_top", nullable = false)
@@ -75,9 +77,21 @@ public class Notice {
         this.title = ObjectUtils.isEmpty(noticeUpdateDto.getNoticeTitle())
                 ? this.title
                 : noticeUpdateDto.getNoticeTitle();
-        this.isTop = ObjectUtils.isEmpty(noticeUpdateDto.isTop())
+    }
+
+    public void updateNoticeTopStatus(Boolean isTop) {
+        this.isTop = ObjectUtils.isEmpty(isTop)
                 ? this.isTop
-                : noticeUpdateDto.isTop();
+                : isTop;
+    }
+
+    public void hitCountUp() {
+        if(hit > MAX_HIT_COUNT) {
+            this.hit = MAX_HIT_COUNT;
+            return;
+        }
+        this.hit++;
+
     }
 
 

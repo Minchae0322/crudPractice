@@ -12,14 +12,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Positive;
-import java.time.LocalDate;
 
 @Tag(name = "Notice", description = "공지사항 API")
 @Slf4j
@@ -39,7 +36,7 @@ public class NoticeController {
     }
 
     @Operation(summary = "공지사항 상세 조회", tags = "Notice")
-    @GetMapping(path = "notice/{noticeId}")
+    @GetMapping(path = "/{noticeId}")
     public ResponseEntity<?> create(
             @Parameter(name = "noticeId", description = "공지사항 ID") @PathVariable(value = "noticeId") Long noticeId
     ){
@@ -47,7 +44,7 @@ public class NoticeController {
     }
 
     @Operation(summary = "공지사항 수정", tags = "Notice")
-    @PatchMapping(path = "/notice/update/{noticeId}")
+    @PatchMapping(path = "/update/{noticeId}")
     public ResponseEntity<?> update(
             @PathVariable Long noticeId,
             @RequestBody NoticeUpdateDto updateDto
@@ -57,20 +54,29 @@ public class NoticeController {
     }
 
     @Operation(summary = "상단 공지 사항 부터 페이지로 불러오기", tags = "Notice")
-    @PostMapping(path = "/notice/page=&size=?")
+    @PostMapping(path = "/list")
     public ResponseEntity<Page<NoticeDto>> getNoticePagePriorityTopNotice(
             Pageable pageable
     ){
         return new ResponseEntity<>(noticeFacadeService.getNoticePagePriorityTopNotice(pageable), HttpStatus.OK);
     }
 
-
     @Operation(summary = "공지사항 상태만 삭제", tags = "Notice")
-    @PatchMapping(path = "/notice/delete/{noticeId}")
+    @PatchMapping(path = "/delete/{noticeId}")
     public ResponseEntity<?> delete(
             @PathVariable Long noticeId
     ){
         noticeFacadeService.deleteNotice(noticeId);
         return new ResponseEntity<>(new ApiResponse<>("delete success"), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "공지사항 상단고정 상태 변경", tags = "Notice")
+    @PatchMapping(path = "/fix/{noticeId}")
+    public ResponseEntity<Long> updateNoticeFixStatus(
+            @Parameter(name = "noticeId", description = "공지사항 ID") @PathVariable Long noticeId,
+            @Parameter(name = "isTop", description = "상단 고정 여부") @RequestParam(value = "isTop") Boolean isTop
+    ){
+        return new ResponseEntity<>(noticeFacadeService.updateNoticeStatus(noticeId, isTop), HttpStatus.OK);
     }
 }

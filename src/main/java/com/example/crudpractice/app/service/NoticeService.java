@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
-@Transactional(readOnly = true)
+@Transactional()
 @RequiredArgsConstructor
 @Service
 public class NoticeService {
@@ -51,7 +51,16 @@ public class NoticeService {
      */
     public NoticeDto findNotice(Long noticeId) {
         Notice notice = getNotice(noticeId);
+        upHitCount(notice);
         return NoticeDto.of(notice);
+    }
+
+    /**
+     * 공지사항 상세 정보 조회
+     * @param notice - 공지사항 상세 정보
+     */
+    private void upHitCount(Notice notice) {
+        notice.hitCountUp();
     }
 
     /**
@@ -88,5 +97,15 @@ public class NoticeService {
         notice.delete();
     }
 
+    /**
+     * 상단 고정 상태 변경
+     * @param noticeId - 공지 사항 id
+     * @param isTop - 공지 사항 고정 여부
+     */
+    public Long updateNoticeStatus(Long noticeId, Boolean isTop) {
+        Notice updateNoticeTop = getNotice(noticeId);
+        updateNoticeTop.updateNoticeTopStatus(isTop);
 
+        return updateNoticeTop.getNoticeId();
+    }
 }

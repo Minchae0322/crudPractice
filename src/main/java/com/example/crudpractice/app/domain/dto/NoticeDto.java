@@ -29,6 +29,7 @@ public class NoticeDto {
 
     private LocalDateTime created_at;
 
+
     public static NoticeDto of(Notice notice){
         return NoticeDto.builder()
                 .noticeId(ObjectUtils.isEmpty(notice.getNoticeId())
@@ -44,6 +45,7 @@ public class NoticeDto {
                 .hit(ObjectUtils.isEmpty(notice.getHit())
                         ? null// enum 으로 변경
                         : notice.getHit())
+                .isTop(notice.isTop())
                 .isEnabled(notice.isEnabled())
                 .isDeleted(notice.isDeleted())
                 .created_at(ObjectUtils.isEmpty(notice.getCreatedAt())

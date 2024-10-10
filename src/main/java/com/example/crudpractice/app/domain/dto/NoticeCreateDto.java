@@ -12,7 +12,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+
 
 @Getter
 @Setter
@@ -29,10 +29,16 @@ public class NoticeCreateDto {
     @Schema(description = "공지사항 컨텐트")
     private String noticeContent;
 
+    @NotBlank
+    @Schema(description = "공지사항 상단 고정 상태")
+    private boolean isTop;
+
     public Notice toEntity() {
         return Notice.builder()
                 .title(this.noticeTitle)
                 .content(this.noticeContent)
+                .isEnabled(true)
+                .isTop(this.isTop)
                 .build();
     }
 

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class NoticeFacadeService {
@@ -62,6 +62,16 @@ public class NoticeFacadeService {
      */
     public void deleteNotice(Long noticeId) {
         noticeService.delete(noticeId);
+    }
+
+    /**
+     * 상단 고정 상태 변경
+     * @param noticeId - 공지 사항 id
+     * @param isTop - 공지 사항 고정 여부
+     * @return 업데이트 된 공지사항 id
+     */
+    public Long updateNoticeStatus(Long noticeId, Boolean isTop) {
+        return noticeService.updateNoticeStatus(noticeId, isTop);
     }
 
 
