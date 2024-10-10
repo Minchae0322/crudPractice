@@ -4,11 +4,13 @@ package com.example.crudpractice.app.service;
 import com.example.crudpractice.app.core.exception.ResponseException;
 
 import com.example.crudpractice.app.domain.Notice;
+import com.example.crudpractice.app.domain.User;
 import com.example.crudpractice.app.domain.dto.NoticeCreateDto;
 import com.example.crudpractice.app.domain.dto.NoticeDto;
 import com.example.crudpractice.app.domain.dto.NoticeUpdateDto;
 import com.example.crudpractice.app.repository.NoticeRepository;
 
+import com.example.crudpractice.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class NoticeService {
 
     private final NoticeRepository noticeRepository;
+    private final UserRepository userRepository;
 
     /**
      * 공지사항 등록
@@ -39,7 +42,7 @@ public class NoticeService {
         return noticeRepository.save(notice).getNoticeId();
     }
 
-    private Notice getNotice(Long noticeId) {
+    public Notice getNotice(Long noticeId) {
         return noticeRepository.findByNoticeIdAndDeleted(noticeId, false)
                 .orElseThrow(() -> new ResponseException("NOTICE NOT FOUND", HttpStatus.NOT_FOUND));
     }
@@ -108,4 +111,7 @@ public class NoticeService {
 
         return updateNoticeTop.getNoticeId();
     }
+
+
+
 }

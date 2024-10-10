@@ -13,6 +13,8 @@ import org.springframework.util.ObjectUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.crudpractice.app.core.util.Utils.MAX_HIT_COUNT;
 
@@ -21,7 +23,8 @@ import static com.example.crudpractice.app.core.util.Utils.MAX_HIT_COUNT;
 @NoArgsConstructor
 @SuperBuilder
 @Getter
-@Audited // 데이터 변경이력 테이블 생성을 위해 사용하는 것으로 판단하였습니다.
+@Table(name = "notice")
+@Audited
 public class Notice {
 
     @Comment("공지사항 아이디")
@@ -30,6 +33,7 @@ public class Notice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
 
+    @Comment("공지사항 제목")
     @Column(name = "title", nullable = false, length = 120)
     private String title;
 
@@ -53,10 +57,14 @@ public class Notice {
     @Column(name = "is_deleted", nullable = false)
     private boolean deleted;
 
-
     @Comment("등록일시")
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @Comment("공지사항을 조회 한 유저 id")
+    @Column(name = "notice_hit", nullable = false)
+    @OneToMany(mappedBy = "notice")
+    private List<NoticeHit> noticeHits = new ArrayList<>();
 
     @PrePersist
     public void onPrePersist() {

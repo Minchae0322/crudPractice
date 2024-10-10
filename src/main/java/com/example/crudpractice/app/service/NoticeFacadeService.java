@@ -1,5 +1,7 @@
 package com.example.crudpractice.app.service;
 
+import com.example.crudpractice.app.domain.Notice;
+import com.example.crudpractice.app.domain.User;
 import com.example.crudpractice.app.domain.dto.NoticeCreateDto;
 import com.example.crudpractice.app.domain.dto.NoticeDto;
 import com.example.crudpractice.app.domain.dto.NoticeUpdateDto;
@@ -19,6 +21,10 @@ public class NoticeFacadeService {
 
     private final NoticeService noticeService;
 
+    private final NoticeHitService noticeHitService;
+
+    private final UserService userService;
+
     /**
      * 공지사항 등록
      * @param createDto - 등록 dto
@@ -33,8 +39,13 @@ public class NoticeFacadeService {
      * @param noticeId - 등록 id
      * @return 공지사항 dto
      */
-    public NoticeDto findNotice(Long noticeId) {
-        return noticeService.findNotice(noticeId);
+    public NoticeDto findNotice(Long noticeId, Long userId) {
+        Notice findNotice = noticeService.getNotice(noticeId);
+
+        User findUser = userService.findUser(userId);
+
+        noticeHitService.createNoticeHits(findNotice, findUser);
+        return NoticeDto.of(findNotice);
     }
 
     /**

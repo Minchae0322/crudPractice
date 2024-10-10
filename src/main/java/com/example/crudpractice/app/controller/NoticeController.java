@@ -12,10 +12,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import static com.example.crudpractice.app.core.util.PageInfoConstant.PAGE_SIZE;
 
 
 @Tag(name = "Notice", description = "공지사항 API")
@@ -33,16 +37,16 @@ public class NoticeController {
     public ResponseEntity<?> create(
             @RequestBody NoticeCreateDto createDto
     ){
-        Long createdId = noticeFacadeService.create(createDto);
-        return new ResponseEntity<>(new ApiResponse<>(noticeFacadeService.findNotice(createdId)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<>(noticeFacadeService.create(createDto)), HttpStatus.OK);
     }
 
     @Operation(summary = "공지사항 상세 조회", tags = "Notice")
     @GetMapping(path = "/{noticeId}")
     public ResponseEntity<?> findNotice(
-            @Parameter(name = "noticeId", description = "공지사항 ID") @PathVariable(value = "noticeId") Long noticeId
+            @Parameter(name = "noticeId", description = "공지사항 ID") @PathVariable(value = "noticeId") Long noticeId,
+            @Parameter(name = "noticeId", description = "공지사항 ID") @RequestParam(value = "user_mng_id") Long userMngId
     ){
-        return new ResponseEntity<>(new ApiResponse<>(noticeFacadeService.findNotice(noticeId)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<>(noticeFacadeService.findNotice(noticeId, userMngId)), HttpStatus.OK);
     }
 
     @Operation(summary = "공지사항 수정", tags = "Notice")
@@ -58,7 +62,7 @@ public class NoticeController {
     @Operation(summary = "상단 공지 사항 부터 페이지로 불러오기", tags = "Notice")
     @PostMapping(path = "/list")
     public ResponseEntity<Page<NoticeDto>> getNoticePagePriorityTopNotice(
-            Pageable pageable
+            @Parameter(hidden = true) @PageableDefault(size = PAGE_SIZE, direction = Sort.Direction.DESC) Pageable pageable
     ){
         return new ResponseEntity<>(noticeFacadeService.getNoticePagePriorityTopNotice(pageable), HttpStatus.OK);
     }
