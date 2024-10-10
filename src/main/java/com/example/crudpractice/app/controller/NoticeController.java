@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 import static com.example.crudpractice.app.core.util.PageInfoConstant.PAGE_SIZE;
 
 
@@ -44,10 +46,12 @@ public class NoticeController {
     @GetMapping(path = "/{noticeId}")
     public ResponseEntity<?> findNotice(
             @Parameter(name = "noticeId", description = "공지사항 ID") @PathVariable(value = "noticeId") Long noticeId,
-            @Parameter(name = "noticeId", description = "공지사항 ID") @RequestParam(value = "user_mng_id") Long userMngId
+            @Parameter(name = "userMngId", description = "공지사항 조회한 유저 ID") @RequestParam(value = "user_mng_id") Long userMngId
     ){
         return new ResponseEntity<>(new ApiResponse<>(noticeFacadeService.findNotice(noticeId, userMngId)), HttpStatus.OK);
     }
+
+
 
     @Operation(summary = "공지사항 수정", tags = "Notice")
     @PatchMapping(path = "/update/{noticeId}")
@@ -65,6 +69,15 @@ public class NoticeController {
             @Parameter(hidden = true) @PageableDefault(size = PAGE_SIZE, direction = Sort.Direction.DESC) Pageable pageable
     ){
         return new ResponseEntity<>(noticeFacadeService.getNoticePagePriorityTopNotice(pageable), HttpStatus.OK);
+    }
+
+    @Operation(summary = "해당 날짜 공지사항 불러오기", tags = "Notice")
+    @PostMapping(path = "/list/date")
+    public ResponseEntity<Page<NoticeDto>> getNoticePagePriorityTopNotice(
+            @Parameter(hidden = true) @PageableDefault(size = PAGE_SIZE, direction = Sort.Direction.DESC) Pageable pageable,
+            @Parameter(name = "noticeCreateDate", description = "공지사항 생성 일자")@RequestParam(value = "noticeCreateDate") LocalDate noticeCreateDate
+    ){
+        return new ResponseEntity<>(noticeFacadeService.findNoticePageByDateYYYYMMDD(pageable, noticeCreateDate, true), HttpStatus.OK);
     }
 
     @Operation(summary = "공지사항 상태만 삭제", tags = "Notice")
