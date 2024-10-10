@@ -77,7 +77,6 @@ public class Notice {
         this.title = ObjectUtils.isEmpty(noticeUpdateDto.getNoticeTitle())
                 ? this.title
                 : noticeUpdateDto.getNoticeTitle();
-        updateNoticeTopStatus(noticeUpdateDto.isTop());
     }
 
     public void updateNoticeTopStatus(Boolean isTop) {

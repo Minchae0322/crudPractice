@@ -38,7 +38,7 @@ public class NoticeCreateDto {
                 .title(this.noticeTitle)
                 .content(this.noticeContent)
                 .isEnabled(true)
-                .isTop(isTop)
+                .isTop(this.isTop)
                 .build();
     }
 

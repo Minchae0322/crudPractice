@@ -12,7 +12,5 @@ public class NoticeUpdateDto {
 
     private String noticeContent;
 
-    private boolean isTop;
-
 
 }
