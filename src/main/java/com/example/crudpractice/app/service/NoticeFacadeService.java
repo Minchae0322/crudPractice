@@ -4,6 +4,7 @@ import com.example.crudpractice.app.domain.Notice;
 import com.example.crudpractice.app.domain.User;
 import com.example.crudpractice.app.domain.dto.NoticeCreateDto;
 import com.example.crudpractice.app.domain.dto.NoticeDto;
+import com.example.crudpractice.app.domain.dto.NoticeSearchDto;
 import com.example.crudpractice.app.domain.dto.NoticeUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -98,5 +99,13 @@ public class NoticeFacadeService {
         return noticeService.updateNoticeStatus(noticeId, isTop);
     }
 
-
+    /**
+     * 게시물 키워드 검색
+     @param pageable 페이지 offset, 페이지 size
+     @param noticeSearchDto 검색 조건 dto
+     * @return 검색어를 포함한 공지사항 페이지
+     */
+    public Page<NoticeDto> searchNotice(Pageable pageable, NoticeSearchDto noticeSearchDto) {
+        return noticeSearchService.searchNotice(pageable, noticeSearchDto);
+    }
 }

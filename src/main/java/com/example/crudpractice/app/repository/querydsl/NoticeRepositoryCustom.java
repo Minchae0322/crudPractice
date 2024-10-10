@@ -2,6 +2,7 @@ package com.example.crudpractice.app.repository.querydsl;
 
 import com.example.crudpractice.app.domain.Notice;
 
+import com.example.crudpractice.app.domain.dto.NoticeSearchDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,4 +14,6 @@ public interface NoticeRepositoryCustom {
     Page<Notice> findAllNoticePagePriorityTopNotice(Pageable pageable, boolean isEnabled);
 
     Page<Notice> findNoticePageByLocalDate(Pageable pageable, LocalDate date, boolean isEnabled);
+
+    Page<Notice> searchNoticePageByKeyword(Pageable pageable, NoticeSearchDto noticeSearchDto);
 }

@@ -3,6 +3,7 @@ package com.example.crudpractice.app.controller;
 import com.example.crudpractice.app.core.response.ApiResponse;
 import com.example.crudpractice.app.domain.dto.NoticeCreateDto;
 import com.example.crudpractice.app.domain.dto.NoticeDto;
+import com.example.crudpractice.app.domain.dto.NoticeSearchDto;
 import com.example.crudpractice.app.domain.dto.NoticeUpdateDto;
 import com.example.crudpractice.app.service.NoticeFacadeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,7 +53,6 @@ public class NoticeController {
     }
 
 
-
     @Operation(summary = "공지사항 수정", tags = "Notice")
     @PatchMapping(path = "/update/{noticeId}")
     public ResponseEntity<?> update(
@@ -71,13 +71,22 @@ public class NoticeController {
         return new ResponseEntity<>(noticeFacadeService.getNoticePagePriorityTopNotice(pageable), HttpStatus.OK);
     }
 
-    @Operation(summary = "해당 날짜 공지사항 불러오기", tags = "Notice")
+    @Operation(summary = "해당 날짜 공지사항 페이지 불러오기", tags = "Notice")
     @PostMapping(path = "/list/date")
     public ResponseEntity<Page<NoticeDto>> getNoticePagePriorityTopNotice(
             @Parameter(hidden = true) @PageableDefault(size = PAGE_SIZE, direction = Sort.Direction.DESC) Pageable pageable,
-            @Parameter(name = "noticeCreateDate", description = "공지사항 생성 일자")@RequestParam(value = "noticeCreateDate") LocalDate noticeCreateDate
+            @Parameter(name = "noticeCreateDate", description = "공지사항 생성 일자") @RequestParam(value = "noticeCreateDate") LocalDate noticeCreateDate
     ){
         return new ResponseEntity<>(noticeFacadeService.findNoticePageByDateYYYYMMDD(pageable, noticeCreateDate, true), HttpStatus.OK);
+    }
+
+    @Operation(summary = "검색어로 공지사항 페이지 불러오기", tags = "Notice")
+    @PostMapping(path = "/list/search")
+    public ResponseEntity<Page<NoticeDto>> getNoticePagePriorityTopNotice(
+            @Parameter(hidden = true) @PageableDefault(size = PAGE_SIZE, direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestBody NoticeSearchDto noticeSearchDto
+    ){
+        return new ResponseEntity<>(noticeFacadeService.searchNotice(pageable, noticeSearchDto), HttpStatus.OK);
     }
 
     @Operation(summary = "공지사항 상태만 삭제", tags = "Notice")

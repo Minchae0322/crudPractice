@@ -2,6 +2,7 @@ package com.example.crudpractice.app.service;
 
 
 import com.example.crudpractice.app.domain.dto.NoticeDto;
+import com.example.crudpractice.app.domain.dto.NoticeSearchDto;
 import com.example.crudpractice.app.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,11 @@ public class NoticeSearchService {
      */
     public Page<NoticeDto> findNoticePageByDateYYYYMMDD(Pageable pageable, LocalDate noticeCreatedDate, boolean isEnabled) {
         return noticeRepository.findNoticePageByLocalDate(pageable, noticeCreatedDate, isEnabled)
+                .map(NoticeDto::of);
+    }
+
+    public Page<NoticeDto> searchNotice(Pageable pageable, NoticeSearchDto noticeSearchDto) {
+        return noticeRepository.searchNoticePageByKeyword(pageable, noticeSearchDto)
                 .map(NoticeDto::of);
     }
 }
