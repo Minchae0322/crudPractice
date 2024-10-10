@@ -97,5 +97,15 @@ public class NoticeService {
         notice.delete();
     }
 
+    /**
+     * 상단 고정 상태 변경
+     * @param noticeId - 공지 사항 id
+     * @param isTop - 공지 사항 고정 여부
+     */
+    public Long updateNoticeStatus(Long noticeId, Boolean isTop) {
+        Notice updateNoticeTop = getNotice(noticeId);
+        updateNoticeTop.updateNoticeTopStatus(isTop);
 
+        return updateNoticeTop.getNoticeId();
+    }
 }

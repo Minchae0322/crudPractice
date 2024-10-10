@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
 @Tag(name = "Notice", description = "공지사항 API")
 @Slf4j
 @Validated
@@ -53,7 +54,7 @@ public class NoticeController {
     }
 
     @Operation(summary = "상단 공지 사항 부터 페이지로 불러오기", tags = "Notice")
-    @PostMapping(path = "/page=&size=?")
+    @PostMapping(path = "/list")
     public ResponseEntity<Page<NoticeDto>> getNoticePagePriorityTopNotice(
             Pageable pageable
     ){
@@ -67,5 +68,15 @@ public class NoticeController {
     ){
         noticeFacadeService.deleteNotice(noticeId);
         return new ResponseEntity<>(new ApiResponse<>("delete success"), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "공지사항 상단고정 상태 변경", tags = "Notice")
+    @PatchMapping(path = "/fix/{noticeId}")
+    public ResponseEntity<Long> updateNoticeFixStatus(
+            @Parameter(name = "noticeId", description = "공지사항 ID") @PathVariable Long noticeId,
+            @Parameter(name = "isTop", description = "상단 고정 여부") @RequestParam(value = "isTop") Boolean isTop
+    ){
+        return new ResponseEntity<>(noticeFacadeService.updateNoticeStatus(noticeId, isTop), HttpStatus.OK);
     }
 }

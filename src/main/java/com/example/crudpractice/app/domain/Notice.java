@@ -40,7 +40,7 @@ public class Notice {
 
     @Comment("조회수")
     @Column(name = "hit", columnDefinition = "bigint default 0")
-    private Long hit;
+    private long hit;
 
     @Comment("상단 고정 여부")
     @Column(name = "is_top", nullable = false)
@@ -77,9 +77,13 @@ public class Notice {
         this.title = ObjectUtils.isEmpty(noticeUpdateDto.getNoticeTitle())
                 ? this.title
                 : noticeUpdateDto.getNoticeTitle();
-        this.isTop = ObjectUtils.isEmpty(noticeUpdateDto.isTop())
+        updateNoticeTopStatus(noticeUpdateDto.isTop());
+    }
+
+    public void updateNoticeTopStatus(Boolean isTop) {
+        this.isTop = ObjectUtils.isEmpty(isTop)
                 ? this.isTop
-                : noticeUpdateDto.isTop();
+                : isTop;
     }
 
     public void hitCountUp() {
