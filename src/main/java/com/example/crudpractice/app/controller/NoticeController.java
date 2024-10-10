@@ -30,14 +30,16 @@ public class NoticeController {
 
     @Operation(summary = "공지사항 등록", tags = "Notice")
     @PostMapping(path = "")
-    public ResponseEntity<?> create(@RequestBody NoticeCreateDto createDto){
+    public ResponseEntity<?> create(
+            @RequestBody NoticeCreateDto createDto
+    ){
         Long createdId = noticeFacadeService.create(createDto);
         return new ResponseEntity<>(new ApiResponse<>(noticeFacadeService.findNotice(createdId)), HttpStatus.OK);
     }
 
     @Operation(summary = "공지사항 상세 조회", tags = "Notice")
     @GetMapping(path = "/{noticeId}")
-    public ResponseEntity<?> create(
+    public ResponseEntity<?> findNotice(
             @Parameter(name = "noticeId", description = "공지사항 ID") @PathVariable(value = "noticeId") Long noticeId
     ){
         return new ResponseEntity<>(new ApiResponse<>(noticeFacadeService.findNotice(noticeId)), HttpStatus.OK);
@@ -46,7 +48,7 @@ public class NoticeController {
     @Operation(summary = "공지사항 수정", tags = "Notice")
     @PatchMapping(path = "/update/{noticeId}")
     public ResponseEntity<?> update(
-            @PathVariable Long noticeId,
+            @Parameter(name = "noticeId", description = "공지사항 ID") @PathVariable Long noticeId,
             @RequestBody NoticeUpdateDto updateDto
     ){
 
@@ -64,7 +66,7 @@ public class NoticeController {
     @Operation(summary = "공지사항 상태만 삭제", tags = "Notice")
     @PatchMapping(path = "/delete/{noticeId}")
     public ResponseEntity<?> delete(
-            @PathVariable Long noticeId
+            @Parameter(name = "noticeId", description = "공지사항 ID") @PathVariable Long noticeId
     ){
         noticeFacadeService.deleteNotice(noticeId);
         return new ResponseEntity<>(new ApiResponse<>("delete success"), HttpStatus.OK);

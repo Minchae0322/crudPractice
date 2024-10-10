@@ -30,7 +30,6 @@ public class Notice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
 
-
     @Column(name = "title", nullable = false, length = 120)
     private String title;
 
@@ -91,7 +90,6 @@ public class Notice {
             return;
         }
         this.hit++;
-
     }
 
 
